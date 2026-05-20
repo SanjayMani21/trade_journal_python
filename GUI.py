@@ -16,24 +16,39 @@ window = tk.Tk()
 window.geometry("500x400")
 window.title("Test")
 
+#Creating frame
+
+#FOR INPUT
+input_frame = tk.Frame(window)
+input_frame.pack(pady=5, side="top")
+
+#FOR DISPLAY
+display_frame = tk.Frame(window)
+display_frame.pack(pady=5,side="bottom")
+
+#FOR BUTTON
+button_frame = tk.Frame(window)
+button_frame.pack(pady=5,side="bottom")
+
+
 #Using Label
-qty_text = tk.Label(window, text="Qty:")
-qty_text.pack(pady=5)
+qty_text = tk.Label(input_frame, text="Qty:")
+qty_text.pack()
 
 #Using entry field
-qty_entry = tk.Entry(window,justify="center")
-qty_entry.pack(pady=5)
+qty_entry = tk.Entry(input_frame,justify="center")
+qty_entry.pack()
 
-buy_price_text = tk.Label(window,text="Buy price:")
+buy_price_text = tk.Label(input_frame,text="Buy price:")
 buy_price_text.pack()
 
-buy_entry = tk.Entry(window,justify="center")
+buy_entry = tk.Entry(input_frame,justify="center")
 buy_entry.pack()
 
-sell_price_text = tk.Label(window,text="Sell price:")
+sell_price_text = tk.Label(input_frame,text="Sell price:")
 sell_price_text.pack()
 
-sell_entry = tk.Entry(window,justify="center")
+sell_entry = tk.Entry(input_frame,justify="center")
 sell_entry.pack()
 
 
@@ -41,12 +56,12 @@ sell_entry.pack()
 p_l = 0
 
 #Label for showing in window always
-p_l_label = tk.Label(window,text =f"P/L:  {p_l}")
+p_l_label = tk.Label(display_frame,text =f"P/L:  {p_l}")
 p_l_label.pack()
 
 
 #Using Text to display saved trades
-trade_box =tk.Text(window,height=10,width=50)
+trade_box =tk.Text(display_frame,height=10,width=50)
 trade_box.pack()
 
 #Startup display trade in text box:
@@ -67,8 +82,11 @@ for trade in data:
         total_p_l += trade['P/L']  #display Total P/L of all trades
 
 #Label for display P/L        
-total_p_l_label = tk.Label(window,text=f"Total P/L: {total_p_l}")
-total_p_l_label.pack()
+total_p_l_label = tk.Label(display_frame,text=f"Total P/L: {total_p_l}")
+total_p_l_label.pack(pady=5)
+
+
+
 
 #Update function:
 def update_total():
@@ -149,7 +167,7 @@ def submit():
     # print(p_l)
 
 #Submit button create and display
-submit_button = tk.Button(window,text="Submit",command=submit)
+submit_button = tk.Button(button_frame,text="Submit",command=submit)
 submit_button.pack()
 
 
