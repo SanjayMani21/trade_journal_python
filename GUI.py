@@ -13,8 +13,8 @@ except (ValueError, FileNotFoundError):
 
 #Create windpw with Tkinter
 window = tk.Tk()
-window.geometry("500x400")
-window.title("Test")
+window.geometry("500x500")
+window.title("GUI Trade Journal")
 
 #Creating frame
 
@@ -24,18 +24,21 @@ input_frame.pack(pady=5, side="top")
 
 #FOR DISPLAY
 display_frame = tk.Frame(window)
-display_frame.pack(pady=5,side="bottom")
+display_frame.pack(pady=5,side="top")
 
 #FOR BUTTON
 button_frame = tk.Frame(window)
 button_frame.pack(pady=5,side="bottom")
 
+#Delete Frame
+delete_frame = tk.Frame(window)
+delete_frame.pack(pady=3,side="bottom")
 
-#Using Label
+#Using Label & Entry field
 qty_text = tk.Label(input_frame, text="Qty:")
 qty_text.pack()
 
-#Using entry field
+
 qty_entry = tk.Entry(input_frame,justify="center")
 qty_entry.pack()
 
@@ -50,6 +53,12 @@ sell_price_text.pack()
 
 sell_entry = tk.Entry(input_frame,justify="center")
 sell_entry.pack()
+
+delete_text = tk.Label(delete_frame,text="Enter Trade Id to Delete: ")
+delete_text.pack()
+
+delete_trade_input = tk.Entry(delete_frame,justify='center')
+delete_trade_input.pack()
 
 
 #Variables(Global)
@@ -86,6 +95,32 @@ total_p_l_label = tk.Label(display_frame,text=f"Total P/L: {total_p_l}")
 total_p_l_label.pack(pady=5)
 
 
+#Delete function
+def trade_id_delete():
+    try:
+        trade_id = int(delete_trade_input.get()) - 1
+
+        del data[trade_id]
+
+        with open("gui_trade.json",'w') as file:
+            json.dump(data,file)
+
+        delete_trade_input.delete(0,tk.END)
+
+        refresh()
+        update_total()
+
+    except:
+        p_l_label.config(text="Invalid Trade ID")
+
+def refresh():
+     trade_box.delete("1.0", tk.END)
+
+     for index, trade in enumerate(data, start=1):
+        trade_box.insert(
+            tk.END,
+            f"T{index} - QTY:{trade['QTY']} BUY:{trade['BUY']} SELL:{trade['SELL']} P/L:{trade['P/L']}\n"
+        )
 
 
 #Update function:
@@ -166,9 +201,16 @@ def submit():
     # print(sell)
     # print(p_l)
 
+
+
+
+# Delete Button
+delete_button = tk.Button(delete_frame,text="delete",command=trade_id_delete)
+delete_button.pack(padx=10 ,side='left')
+
 #Submit button create and display
-submit_button = tk.Button(button_frame,text="Submit",command=submit)
-submit_button.pack()
+submit_button = tk.Button(input_frame,text="Submit",command=submit)
+submit_button.pack(pady=10)
 
 
 
